@@ -10,6 +10,7 @@ Considerando o dado que "Considere que cada linha da tabela extraída representa
 ```python
 total_serv = dados.shape[0]
 ```
+'128499'
 
 ### 2. Qual a quantidade de servidores cujo cargo básico é Analista de Políticas Públicas Gestão Governamental?
 > Utilizei primeiro um filtro pela coluna "Cargo Básico" filtrando pelo cargo "ANALISTA POLITICAS PUBLICAS GESTAO GOVERNAMENTAL". 
@@ -17,14 +18,15 @@ total_serv = dados.shape[0]
 ```python
 qtdd = dados["CARGO_BASICO"].str.contains("ANALISTA POLITICAS PUBLICAS GESTAO GOVERNAMENTAL", case=False).sum()
 ```
+'185'
 
 ### 3. Qual o percentual de servidores do sexo feminino na Prefeitura?
 > Mesma ideia base da questão anterior, filtrei inicialmente pela coluna "SEXO" que continha "FEMININO" e depois pedi a soma de linhas que apresentavam esse valor. 
 > No print aproveitei o valor encontrado na 1ª questão para obter o percentual de funcionárias do sexo feminino comparado ao total de funcionários.
 ```python
 mulheres = dados["SEXO"].str.contains("FEMININO", case=False).sum()
-print(f"{(mulheres/total_serv):.2%}")
 ```
+'73.16%'
 
 ### 4. Qual o percentual de servidores cuja escolaridade do cargo básico é Superior Completo?
 qtdd_sup_comp = dados["ESCOL_CARGO_BASICO"].str.contains("SUPERIOR COMPLETO", case=False).sum()
