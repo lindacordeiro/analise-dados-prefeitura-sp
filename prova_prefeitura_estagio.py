@@ -1,13 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
---Código desenvolvido por Linda Paula Cordeiro em 13 de Maio de 2026 
-para Prova de análise de dados - COGEDI - SEGES - Prefeitura de São Paulo
-"""
-
-# --Importando os dados**
+# --Importando os dados
 import pandas as pd
 dados = pd.read_csv("prefeitura-fev.CSV", encoding="latin1", sep=";")
-
 
 # 4. Qual a quantidade de servidores na Prefeitura? #(Considerando o dado que "Considere que cada 
 # linha da tabela extraída representa 1 servidor, ou seja, 1 funcionário público" não precisamos filtrar dados)
