@@ -10,7 +10,9 @@ Considerando o dado que "Considere que cada linha da tabela extraída representa
 ```python
 total_serv = dados.shape[0]
 ```
-'128499'
+```python
+128499
+```
 
 ### 2. Qual a quantidade de servidores cujo cargo básico é Analista de Políticas Públicas Gestão Governamental?
 > Utilizei primeiro um filtro pela coluna "Cargo Básico" filtrando pelo cargo "ANALISTA POLITICAS PUBLICAS GESTAO GOVERNAMENTAL". 
@@ -18,56 +20,90 @@ total_serv = dados.shape[0]
 ```python
 qtdd = dados["CARGO_BASICO"].str.contains("ANALISTA POLITICAS PUBLICAS GESTAO GOVERNAMENTAL", case=False).sum()
 ```
-'185'
+```python
+185
+```
 
 ### 3. Qual o percentual de servidores do sexo feminino na Prefeitura?
 > Mesma ideia base da questão anterior, filtrei inicialmente pela coluna "SEXO" que continha "FEMININO" e depois pedi a soma de linhas que apresentavam esse valor. 
 > No print aproveitei o valor encontrado na 1ª questão para obter o percentual de funcionárias do sexo feminino comparado ao total de funcionários.
+> No print adicionei a formatação para duas casas decimais.
 ```python
 mulheres = dados["SEXO"].str.contains("FEMININO", case=False).sum()
+print(f"{(mulheres/total_serv):.2%}")
 ```
-'73.16%'
+```python
+73.16%
+```
 
 ### 4. Qual o percentual de servidores cuja escolaridade do cargo básico é Superior Completo?
+> O filtro que utilizei nessa e em outras questões que exigem essa lógica de filtragem funciona da seguinte forma:
+> nome_dado_a_base_de_dados["NOME_COLUNA_A_SER_FILTRADA"].str.contains("NOME TERMO A FILTRAR", case=False)
+> Quando filtramos apenas assim a biblioteca Pandas retornará a lista de linhas que contém a informação que pedimos para filtrar, para retornar a quantidade de linhas precisamos adicionar o comando ".sum()".
+```python
 qtdd_sup_comp = dados["ESCOL_CARGO_BASICO"].str.contains("SUPERIOR COMPLETO", case=False).sum()
 print(f"{(qtdd_sup_comp/total_serv):.2%}")
+```
+```python
+9.74%
+```
 
-
-# 8. Qual a quantidade de servidores cuja relação jurídico-administrativa é "Efetivo
+### 5. Qual a quantidade de servidores cuja relação jurídico-administrativa é "Efetivo
+```python
 efetivos = dados["REL_JUR_ADM"].str.contains("EFETIVO", case=False).sum()
 print(efetivos)
+```
+```python
+111952
+```
 
-
-# 9. Qual a sigla Secretaria com menor percentual de servidores efetivos?
-# --Menor percentual será a sigla de MENOR QTDD dentre os efetivos
+### 6. Qual a sigla Secretaria com menor percentual de servidores efetivos?
+> Para resolver essa fiz 3 filtros diferentes
+> 1º: filtrei pelos servidores com "REL_JUR_ADM" "EFETIVO"
+```python
 dados_efetivos = dados[dados['REL_JUR_ADM'] == 'EFETIVO']
+```
+> Depois utilizei a sintaxe .value_counts() agrupando pela coluna "SIGLA" assim retorna a quantidade de linhas por sigla
+```python
 qtdd_efetivos_sigla = dados_efetivos["SIGLA"].value_counts()
+```
+> No print adicionei mais uma sintaxe, a .idmin(), ela retornará qual sigla com a menor quantidade de servidores efetivos. Como o exercício não pediu o percentual e sim qual sigla esse formato resolve nosso problema.
+```python
 print(qtdd_efetivos_sigla.idxmin())
+```
+```python
+SMJ
+```
 
-#não foi necessário para responder porém irei deixar como extra o database com os percentuais
-"""
-resultado = pd.DataFrame({
-    "quantidade": qtdd_efetivos_sigla,
-    "percentual": (qtdd_efetivos_sigla / qtdd_efetivos_sigla.sum()) * 100
-})
-resultado["percentual"] = resultado["percentual"].round(2)
-"""
-
-
-#10. Qual a Subprefeitura com menor quantidade de servidores?
+### 7. Qual a Subprefeitura com menor quantidade de servidores?
+> Segui o mesmo raciocínio da questão anterior podem diretamente em uma única linha
+```python
 print(dados_efetivos["SECRET_SUBPREF"].value_counts().idxmin())
+```
+```python
+SECRETARIA MUNICIPAL DE JUSTICA
+```
 
-
-#11. Qual o percentual de servidores efetivos diante da quantidade total de servidores?
+### 8. Qual o percentual de servidores efetivos diante da quantidade total de servidores?
+> Essa foi bem simples, dividi o valor encontrado da 5ª questão (Quantidade de servidores efetivos) pelo valor encontrado na 1ª questão (Total de servidores) e formatei para obter duas casas decimais
+```python
 print(f"{(efetivos/total_serv):.2%}")
+```
+```python
+87.12%
+```
 
-
-#12. Quantos servidores com deficiência tem na Prefeitura?
+### 9. Quantos servidores com deficiência tem na Prefeitura?
+> Essa questão segue a mesma lógica de raciocínio das questões 2, 3 e 4 por exemplo.
+```python
 pcd = dados["PCD"].str.contains("SIM", case=False).sum()
 print(pcd)
+```
+```python
+929
+```
 
-
-#13. Quantos Procuradores Municipais são, também, Secretários Adjuntos? 
+### 10. Quantos Procuradores Municipais são, também, Secretários Adjuntos? 
 # (Existe o cargo Secretário Executivo Adjunto e Secretário Adjunto, considerei os 2)
 print(len(dados[
     (dados['SUBGRUPO'] == 'PROCURADOR') &
@@ -76,7 +112,7 @@ print(len(dados[
 ]))
 
 
-#14. Entre as pessoas com cargo em comissão do tipo "CDA", quantos % são "CDA-1"?
+### 11. Entre as pessoas com cargo em comissão do tipo "CDA", quantos % são "CDA-1"?
 cda = dados[
     (dados['REL_JUR_ADM'].str.contains('COMISSAO', case=False, na=False)) &
     (dados['REF_CARGO_BAS'].str.contains('CDA', case=False, na=False))
